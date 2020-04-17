@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
 
 namespace Laba4_Compress
@@ -61,5 +62,45 @@ namespace Laba4_Compress
             sw.Close();
 
         }
+        
+        public void Decompress()
+        {
+            Dictionary<int, string> dictionary = new Dictionary<int, string>();
+            for (int i = 0; i < 256; i++)
+                dictionary.Add(i, ((char)i).ToString());
+            
+            StreamReader sr = new StreamReader(archiveName);
+            while (sr.Peek() > -1)
+            {
+                List<string> compressed = new List<string>();
+                string file = sr.ReadLine(), decompressed = string.Empty;
+                compressed = file.Split(" ").ToList();
+                string filename = compressed[compressed.Count - 1];
+                compressed.RemoveAt(compressed.Count - 1);
+
+                string w = dictionary[Convert.ToInt32(compressed[0])];
+                compressed.RemoveAt(0);
+
+                foreach (string k in compressed)
+                {
+                    string entry = null;
+                    if (dictionary.ContainsKey(Convert.ToInt32(k)))
+                        entry = dictionary[Convert.ToInt32(k)];
+                    else if (Convert.ToInt32(k) == dictionary.Count)
+                        entry = w + w[0];
+
+                    decompressed += entry;
+
+                    dictionary.Add(dictionary.Count, w + entry[0]);
+
+                    w = entry;
+                }
+
+                StreamWriter sw = new StreamWriter(filename);
+                sw.Write(decompressed);
+                sw.Close();
+            }
+        }
+        
     }
 }
