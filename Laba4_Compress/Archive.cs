@@ -55,11 +55,13 @@ namespace Laba4_Compress
                 sr.Close();
 
                 final += String.Join(' ', compressed) + $" {file}" +'\n';
+                Console.WriteLine($"Compressing file {file}... Done.");
             }
             
             StreamWriter sw = new StreamWriter(archiveName);
             sw.Write(final);
             sw.Close();
+            Console.WriteLine($"Result written to {archiveName}");
 
         }
         
@@ -70,11 +72,11 @@ namespace Laba4_Compress
                 dictionary.Add(i, ((char)i).ToString());
             
             StreamReader sr = new StreamReader(archiveName);
+            int fileCount = 0;
             while (sr.Peek() > -1)
             {
-                List<string> compressed = new List<string>();
                 string file = sr.ReadLine(), decompressed = string.Empty;
-                compressed = file.Split(" ").ToList();
+                List<string> compressed = file.Split(" ").ToList();
                 string filename = compressed[compressed.Count - 1];
                 compressed.RemoveAt(compressed.Count - 1);
 
@@ -99,7 +101,10 @@ namespace Laba4_Compress
                 StreamWriter sw = new StreamWriter(filename);
                 sw.Write(decompressed);
                 sw.Close();
+                Console.WriteLine($"Getting out file {filename}... Done.");
+                fileCount++;
             }
+            Console.WriteLine($"{fileCount} files written.");
         }
         
     }
