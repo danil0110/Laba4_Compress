@@ -1,12 +1,23 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+ 
 namespace Laba4_Compress
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            List<string> files = new List<string>();
+            files.Add("myArchive.lzw");
+            files.Add("simpletext.txt");
+            files.Add("rage.txt");
+            files.Add("file.txt");
+            
+            Archive archive = new Archive(files);
+            archive.Compress();
         }
+        
     }
 }
