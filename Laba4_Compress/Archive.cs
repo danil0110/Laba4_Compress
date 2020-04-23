@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
+using System.Text;
 
 namespace Laba4_Compress
 {
@@ -75,13 +76,14 @@ namespace Laba4_Compress
             int fileCount = 0;
             while (sr.Peek() > -1)
             {
-                string file = sr.ReadLine(), decompressed = string.Empty;
+                string file = sr.ReadLine();
                 List<string> compressed = file.Split(" ").ToList();
                 string filename = compressed[compressed.Count - 1];
                 compressed.RemoveAt(compressed.Count - 1);
 
                 string w = dictionary[Convert.ToInt32(compressed[0])];
                 compressed.RemoveAt(0);
+                StringBuilder decompressed = new StringBuilder(w);
 
                 foreach (string k in compressed)
                 {
@@ -91,7 +93,7 @@ namespace Laba4_Compress
                     else if (Convert.ToInt32(k) == dictionary.Count)
                         entry = w + w[0];
 
-                    decompressed += entry;
+                    decompressed.Append(entry);
 
                     dictionary.Add(dictionary.Count, w + entry[0]);
 
